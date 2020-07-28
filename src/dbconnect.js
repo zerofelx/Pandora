@@ -17,14 +17,16 @@ connection.connect(function(err){
 }) 
 
 function InsertData(pass1, pass2) {
-    var query = connection.query(`
-    INSERT INTO wpa_keys VALUES ('${pass1}', '${pass2}')
-    `, function(err) {
-        if(err) {
-            return false
-        } else {
-            return true
-        }
+    return new Promise((resolve, reject) => {
+        var query = connection.query(`
+        INSERT INTO wpa_keys VALUES ('${pass1}', '${pass2}')
+        `, function(err) {
+            if(err) {
+                reject('Error en la consulta')
+            } else {
+                resolve('Datos ingresados correctamente')
+            }
+        })
     })
 }
 
@@ -45,35 +47,32 @@ function GetSelectData(data, table, where) {
     })
 }
 
-// GetSelectData('*', 'wpa_keys', `password1='test1'`)
-//     .then(data => console.log(data))
-//     .catch(err => console.log(err))
-
 function GetAllData(data, table) {
-    var query = connection.query(`SELECT ${data} FROM ${table}`, (err, result) => {
-        if(err) {
-            throw err;
-        } else {
-            var resultado = result;
-            if(resultado.length > 0) {
-                // console.log(resultado)
-                return resultado
+    return new Promise((resolve, reject) => {
+        var query = connection.query(`SELECT ${data} FROM ${table}`, (err, result) => {
+            if(err) {
+                reject('Error en la consulta')
             } else {
-                console.log('Error en la consulta')
-                return false
+                var resultado = result;
+                if(resultado.length > 0) {
+                    resolve(resultado)
+                } else {
+                    reject('Error en la consulta')
+                }
             }
-        }
+        })
     })
 }
 
 function DeleteData(table, where) {
-    var query = connection.query(`DELETE FROM ${table} WHERE ${where}`, (err) => {
-        if(err) {
-            throw err;
-        } else {
-            console.log('Datos eliminados correctamente')
-            return true
-        }
+    return new Promise((resolve, reject) => {
+        var query = connection.query(`DELETE FROM ${table} WHERE ${where}`, (err) => {
+            if(err) {
+                reject('Error al eliminar los datos')
+            } else {
+                resolve('Datos eliminados correctamente')
+            }
+        })
     })
 }
 

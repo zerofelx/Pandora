@@ -1,12 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const query = require('./dbconnect')
 const app = express();
-
-
-query.GetAllData('*', 'wpa_key')
-    .then(data => console.log(data))
-    .catch(err => console.error(err))
 
 
 // Settings 

@@ -1,22 +1,27 @@
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'usuario',
-    password: 'contraseña',
-    database: 'pandora',
-    port: 3306 
-})
+function ConectarDB() {
+    var connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'usuario',
+        password: 'contraseña',
+        database: 'pandora',
+        port: 3306 
+    })
+    
+    connection.connect(function(err){
+        if(err) {
+            throw err;
+        } else {
+            console.log('Conexión Correcta')
+        }
+    }) 
+    return connection
+}
 
-connection.connect(function(err){
-    if(err) {
-        throw err;
-    } else {
-        console.log('Conexión Correcta')
-    }
-}) 
 
 function InsertData(pass1, pass2) {
+    var connection = ConectarDB();
     return new Promise((resolve, reject) => {
         var query = connection.query(`
         INSERT INTO wpa_keys VALUES ('${pass1}', '${pass2}')
@@ -27,10 +32,12 @@ function InsertData(pass1, pass2) {
                 resolve('Datos ingresados correctamente')
             }
         })
+        connection.end()
     })
 }
 
 function GetSelectData(data, table, where) {
+    var connection = ConectarDB();
     return new Promise((solve, reject) => {
         var query = connection.query(`SELECT ${data} FROM ${table} WHERE ${where}`, (err, result) => {
             if(err) {
@@ -44,10 +51,12 @@ function GetSelectData(data, table, where) {
                 }
             }
         })
+        connection.end()
     })
 }
 
 function GetAllData(data, table) {
+    var connection = ConectarDB();
     return new Promise((resolve, reject) => {
         var query = connection.query(`SELECT ${data} FROM ${table}`, (err, result) => {
             if(err) {
@@ -57,14 +66,16 @@ function GetAllData(data, table) {
                 if(resultado.length > 0) {
                     resolve(resultado)
                 } else {
-                    reject('Error en la consulta')
+                    reject('No hay resultados para mostrar')
                 }
             }
         })
+        connection.end()
     })
 }
 
 function DeleteData(table, where) {
+    var connection = ConectarDB();
     return new Promise((resolve, reject) => {
         var query = connection.query(`DELETE FROM ${table} WHERE ${where}`, (err) => {
             if(err) {
@@ -73,10 +84,9 @@ function DeleteData(table, where) {
                 resolve('Datos eliminados correctamente')
             }
         })
+        connection.end()
     })
 }
-
-connection.end()
 
 module.exports.InsertData = InsertData;
 module.exports.GetSelectData = GetSelectData;

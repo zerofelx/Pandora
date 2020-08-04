@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEVN Curso</title>
+    <!-- Add Bootstrap and Bootstrap-Vue CSS to the <head> section -->  
+
+    <link type="text/css" rel="stylesheet" href="bootstrap/bootstrap.min.css"/>  
+    <link type="text/css" rel="stylesheet" href="bootstrap/bootstrap-vue.min.css">    
+
+    <!-- Add Vue and Bootstrap-Vue JS just before the closing </body> tag -->  
+
+    <script src="bootstrap/vue.min.js"> </script>
+    <script src="bootstrap/bootstrap-vue.min.js"> </script>  
+    <title>Pandora</title>
 </head>
 <body>
-    <h1>Hello World with Vue.js</h1>
+    <div id="app"></div>
+
+    <script src="js/bundle.js"></script>
 </body>
 </html>

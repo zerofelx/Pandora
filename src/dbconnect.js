@@ -7,7 +7,7 @@ function ConectarDB() {
     var connection = mysql.createConnection({
         host: 'localhost',
         user: 'usuario',
-        password: 'password',
+        password: 'et3ct26g2d',
         database: 'pandora',
         port: 3306 
     })
@@ -22,12 +22,11 @@ function ConectarDB() {
     return connection
 }
 
-
-function InsertData(pass1, pass2) {
+function InsertData(table, pass1, pass2) {
     var connection = ConectarDB();
     return new Promise((resolve, reject) => {
         var query = connection.query(`
-        INSERT INTO wpa_keys (ESSID, BSSID, psw1, psw2) VALUES ('${essid}', '${bssid}', '${pass1}', '${pass2}')
+        INSERT INTO ${table} (ESSID, BSSID, psw1, psw2) VALUES ('${essid}', '${bssid}', '${pass1}', '${pass2}')
         `, function(err) {
             if(err) {
                 reject('Error en la consulta')
@@ -50,7 +49,7 @@ function GetSelectData(data, table, where) {
                 if(resultado.length > 0) {
                     solve(resultado)
                 } else {
-                    reject('Error en la consulta')
+                    reject('No existen datos con estas condiciones')
                 }
             }
         })
@@ -91,7 +90,22 @@ function DeleteData(table, where) {
     })
 }
 
+function UpdateData(table, data, where) {
+    var connection = ConectarDB();
+    return new Promise((resolve, reject) => {
+        var query = connection.query(`UPDATE ${table} SET ${data} WHERE ${where}`, (err) => {
+            if(err) {
+                reject('Error al actualizar los datos')
+            } else {
+                resolve('Datos actualizados correctamente')
+            }
+        })
+        connection.end()
+    })
+}
+
 module.exports.InsertData = InsertData;
 module.exports.GetSelectData = GetSelectData;
 module.exports.GetAllData = GetAllData;
 module.exports.DeleteData = DeleteData;
+module.exports.UpdateData = UpdateData;

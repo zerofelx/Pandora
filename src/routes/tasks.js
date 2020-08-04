@@ -10,13 +10,29 @@ class pwned {
 }
 
 router.get('/pwned', async (req, res) => {
-    var passwords = await query.GetAllData('*', 'wpa_keys')
-    res.json(passwords)
+    await query.GetAllData('*', 'wpa_keys')
+    .then(data => {
+        res.json(data)
+    })
+    .catch(err => {
+        res.json(err)
+    })
+})
+
+router.get('/pwned/:id', async (req, res) => {
+    await query.GetSelectData('*', 'wpa_keys', `ID='${req.params.id}'`)
+    .then(data => {
+        res.json(data)
+    })
+    .catch(err => {
+        res.json(err)
+    })
+    
 })
 
 router.post('/', async (req, res) => {
-    var passwords = new pwned(req.body.psw1, req.body.psw2)
-    await query.InsertData(passwords.psw1, passwords.psw2)
+    var passwords = new pwned(req.body.Password, req.body.VerifyPass)
+    await query.InsertData('wpa_keys',passwords.psw1, passwords.psw2)
 
     console.log(passwords)
     res.json({
@@ -25,8 +41,17 @@ router.post('/', async (req, res) => {
 })
 
 router.put('/:id', async (req, res) => {
-    console.log(req.params)
-    res.json(req.params)
+    await query.UpdateData('wpa_keys', `psw1 = 'UpdateTest', psw2 = 'UpdateTest'`, `ID=${req.params.id}`)
+        .then(response => {
+            res.json({
+                status: response,
+            })
+        })
+        .catch(err => {
+            res.json({
+                status: err
+            })
+        })
 })
 
 module.exports = router;

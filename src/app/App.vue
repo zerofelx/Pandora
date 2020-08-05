@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <pandora-menu :title="ESSID"/>
-    <router-view :essid="ESSID" :bssid="BSSID" />
+    <router-view :essid="ESSID" :bssid="BSSID" :Model="Model"/>
   </div>
 </template>
 
@@ -16,7 +16,8 @@ export default {
   data() {
     return {
       ESSID: '',
-      BSSID: ''
+      BSSID: '',
+      Model: ''
     }
   },
   methods: {
@@ -26,6 +27,7 @@ export default {
         .then(data => {
           this.ESSID = data.ESSID
           this.BSSID = data.BSSID
+          this.Model = data.Model
         })
     }
   },

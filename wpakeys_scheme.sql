@@ -7,3 +7,10 @@ create table wpa_keys (
     model varchar(30),
     primary key(ID)
 );
+
+create table pwneds_admin (
+    ID integer not null AUTO_INCREMENT,
+    username varchar(30) not null,
+    psw varchar(50) not null,
+    primary key(ID)
+)

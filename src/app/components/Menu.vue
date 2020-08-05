@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar navbar-light bg-light">
             <a href="/" class="navbar-brand">{{ title }}</a>
-            <router-link to="pwned">Pwned</router-link>
+            <button @click="ViewPwneds()" class="btn btn-primary">Advanced Config</button>
         </nav>
     </div>
 </template>
@@ -11,7 +11,14 @@
 export default {
     name: 'PandoraMenu',
     props: {
-        title: String
+        title: String,
+        password: String,
+        verifypassword: String
+    },
+    methods: {
+        ViewPwneds() {
+            this.$router.push('/login')
+        }
     }
 }
 </script>

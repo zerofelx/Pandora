@@ -64,4 +64,14 @@ router.get('/wireless', async (req, res) => {
         }) 
 })
 
+router.get('/login/:id', async (req, res) => {
+    await query.GetSelectData('*', 'pwneds_admin', `username='${req.params.id}'`)
+        .then(data => {
+            res.json(data)
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
+
 module.exports = router;

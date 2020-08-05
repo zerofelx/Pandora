@@ -12,11 +12,6 @@ export default {
     name: 'PandoraMenu',
     props: {
         title: String
-    }, 
-    data() {
-        return {
-            test: "Hola"
-        }
     }
 }
 </script>

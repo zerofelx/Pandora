@@ -6,17 +6,21 @@
                     <th>ID</th>
                     <th>ESSID</th>
                     <th>BSSID</th>
-                    <th>psw1</th>
-                    <th>psw2</th>
+                    <th>Password</th>
+                    <th>Model</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="pwned of pwneds">
+                <tr v-for="pwned of pwneds" v-bind:key="pwned.ID">
                     <td>{{ pwned.ID }}</td>
-                    <td>{{ pwned.ESSID }}</td>
+                    <td>
+                        <router-link :to="{ name: 'EssidView', params: {id: pwned.ESSID} }">
+                            {{ pwned.ESSID }}
+                        </router-link>
+                    </td>
                     <td>{{ pwned.BSSID }}</td>
                     <td>{{ pwned.psw1 }}</td>
-                    <td>{{ pwned.psw2 }}</td>
+                    <td>{{ pwned.model }}</td>
                 </tr>
             </tbody>
         </table>
@@ -39,7 +43,8 @@ export default {
     name: "PwnedView",
     data() {
         return {
-            pwneds: []
+            pwneds: [],
+            SelectData: ''
         }
     },
     methods: {
@@ -48,8 +53,8 @@ export default {
                 .then(res => res.json())
                 .then(data => {
                     this.pwneds = data;
-                    console.log(this.pwneds)
                 })
+            this.SelectData = '';
         }
     },
     created() {

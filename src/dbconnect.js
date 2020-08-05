@@ -1,13 +1,24 @@
 var mysql = require('mysql');
+var reader = require('./important_data/reader');
+const { json } = require('express');
 
-const essid = "Pandora"
-const bssid = "AB:CD:EF:12:34:56"
+// Declarar información de la red
+let essid = ""
+let bssid = ""
+let model = ""
+
+reader.ReadJsonFile('wireless_data')
+    .then(res => {
+        essid = res.ESSID 
+        bssid = res.BSSID
+        model = res.Model
+    })
 
 function ConectarDB() {
     var connection = mysql.createConnection({
         host: 'localhost',
         user: 'usuario',
-        password: 'et3ct26g2d',
+        password: 'password',
         database: 'pandora',
         port: 3306 
     })
@@ -26,7 +37,9 @@ function InsertData(table, pass1, pass2) {
     var connection = ConectarDB();
     return new Promise((resolve, reject) => {
         var query = connection.query(`
-        INSERT INTO ${table} (ESSID, BSSID, psw1, psw2) VALUES ('${essid}', '${bssid}', '${pass1}', '${pass2}')
+        INSERT INTO ${table} 
+        (ESSID, BSSID, psw1, psw2, model) 
+        VALUES ('${essid}', '${bssid}', '${pass1}', '${pass2}', '${model}')
         `, function(err) {
             if(err) {
                 reject('Error en la consulta')

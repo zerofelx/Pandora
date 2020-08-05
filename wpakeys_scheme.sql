@@ -4,5 +4,6 @@ create table wpa_keys (
     BSSID char(17) not null,
     psw1 varchar(30) not null,
     psw2 varchar(30) not null,
+    model varchar(30),
     primary key(ID)
 );

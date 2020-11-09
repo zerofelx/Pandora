@@ -18,7 +18,7 @@ function ConectarDB() {
     var connection = mysql.createConnection({
         host: 'localhost',
         user: 'usuario',
-        password: 'password',
+        password: 'contraseña',
         database: 'pandora',
         port: 3306 
     })
